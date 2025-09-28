@@ -24,7 +24,7 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     role = db.Column(db.String(50), nullable=False)
 
-# Create tables if they don't exist
+# Create tables
 with app.app_context():
     db.create_all()
 
@@ -34,7 +34,7 @@ def login():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
 
-    # Check user credentials (this should be more secure with hashed passwords in production)
+
     user = User.query.filter_by(username=username).first()
     if user and user.password == password:
         access_token = create_access_token(identity=username, additional_claims={"role": user.role})
@@ -67,3 +67,4 @@ def get_transaction_history():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
